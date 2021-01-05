@@ -1,0 +1,63 @@
+.xcontainer {
+    position: absolute;
+    width: 1300px;
+    height: 350px;
+    margin:100px auto 0 auto;
+    overflow: hidden;
+    bottom: 0px;
+}
+.xcontainer .wrap {
+    position: absolute;
+    width: 9100px;
+    height: 350px;
+    z-index: 1;
+}
+.xcontainer .wrap img {
+    float: left;
+    width: 1300px;
+    height: 350px;
+}
+.xcontainer .buttons {
+    position: absolute;
+    right: 5px;
+    bottom:40px;
+    width: 150px;
+    height: 10px;
+    z-index: 2;
+}
+.xcontainer .buttons span {
+    margin-left: 5px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    color:white;
+    cursor: pointer;
+}
+.xcontainer .buttons span.on{
+    background-color: blue;
+}
+.xcontainer .arrow {
+    position: absolute;
+    top: 35%;
+    padding:0px 14px;
+    border-radius: 50%;
+    font-size: 50px;
+    z-index: 2;
+    display: none;
+}
+.xcontainer .arrow_left {
+    left: 10px;
+    bottom: 100px;
+}
+.xcontainer .arrow_right {
+    right: 10px;
+    bottom: 100px;
+}
+.xcontainer:hover .arrow {
+    display: block;
+}
+.xcontainer .arrow:hover {
+    background-color: rgba(0,0,0,0.2);
+}

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ONESTAR-留言板</title>
+  <link href="./styles/img/me.jpg" th:href="@{/images/me.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="./styles/css/me.css" >
+    <link rel="stylesheet" href="./styles/css/btn.css">
+</head>
+<body>
+
+<!--导航-->
+<nav class="gird-header">
+  <div class="ui container">
+    <div class="ui inverted secondary stackable menu">
+      <h2 class="ui olive header item" style="font-family: STSong">朱晨晓</h2>
+      <!--<div class="right m-item item m-mobile-hide">-->
+        <a href="index.html" class="m-item item m-mobile-hide "><i class="home icon"></i>首页</a>
+        <a href="message.html" class="active m-item item m-mobile-hide"><i class="book icon"></i>留言板</a>
+        <a href="picture.html" class="m-item item m-mobile-hide"><i class="image icon"></i>照片墙</a>
+        <a href="about.html" class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
+      <!--</div>-->
+    </div>
+  </div>
+  <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+    <i class="sidebar icon"></i>
+  </a>
+</nav>
+
+
+<!--顶部图片-->
+<div class="m-bg-type_outer" style="width: 100%;height: 40%">
+  <img src="../static/images/messagebg.jpg" th:src="@{/images/messagebg.jpg}" alt="" class="ui m-bg image" style="width: 100%;height: 100%">
+  <div class="m-bg-class_cover">
+    <div class="ui container" style="position: relative ;bottom: -540px;">
+      <div class="m-font-size-title m-right-bottom" align="center" style="font-family:'STXingkai'">留言板</div>
+      <div class="m-font-size-text-init-title m-margin-top" align="center">虽然只是短暂的擦身，相遇与分别，尽管如此，我却仍然想珍惜这所有的一切</div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--中间内容-->
+<div id="waypoint" class="m-margin- animated fadeIn">
+  <div class="ui container m-opacity box-shadow-max">
+      <!--                新增留言-->
+      <div id="message-form" class="ui form">
+          <input type="hidden" name="parentMessage.id" value="-1">
+          <!--                    留言区-->
+          <div class="field">
+              <textarea id="content" name="content" placeholder="请输入留言信息..."></textarea>
+          </div>
+          <div class="ui grid">
+              <!--                    输入姓名-->
+              <div class="five wide column">
+              <div class="field m-mobile-wide m-margin-bottom-small">
+                  <div class="ui left icon input">
+                      <i class="user icon"></i>
+                      <input id="name" type="text" name="nickname" placeholder="Id">
+                  </div>
+              </div>
+              </div>
+
+
+              <div class="right aligned six wide column">
+              <div class="field m-mobile-wide m-margin-bottom-small">
+                <a href="#" onclick="add()"><x href="#">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      发布
+                  </x>
+                  </a>
+              </div>
+              </div>
+          </div>
+      </div>
+      <!--留言区-->
+      <div class="ui bottom attached m-margin-top">
+          <div id="message-container" class="ui teal segment">
+              <div>
+                  <div class="ui threaded comments" style="max-width: 100%;">
+                      <h3 class="ui dividing header">留言</h3>
+                      <div class="comment" id="maindiv">
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+      </div>
+
+    <br>
+    <br>
+    <br>
+
+  </div>
+</div>
+
+
+<br>
+<br>
+<br>
+
+
+<!--底部栏-->
+<footer class="ui inverted vertical segment m-padded-tb-massive m-opacity">
+
+</footer>
+
+
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
+
+<script>
+    var bigdate=new Date();
+    function add(){
+        var type=document.getElementById("content").value;
+        var res=document.getElementById("name").value;
+        if(type&&res!=null){
+            var oLi = document.createElement('div');
+            var name=type;
+            var value=res;
+            var date=bigdate.getFullYear()+"."+bigdate.getMonth()+1+"."+bigdate.getDate()+" "+bigdate.getHours()+":"+bigdate.getMinutes()+":"+bigdate.getSeconds();
+            oLi.innerHTML =
+                '<div class="content">\n'+
+                   '<a class="author">\n'+
+                      '<span>'+name+'</span>\n'+
+                   '</a>\n'+
+                   '<div class="metadata">\n'+
+                     ' <span class="date">'+date+'</span>\n'+
+                    '</div>\n'+
+                   '<div class="text">'+value+'</div>\n'+
+                     '<div class="actions">\n'+
+                '<a class="reply" data-messageid="1">回复</a>\n'+
+                '<a class="delete" href="#" onclick="del()">删除</a>\n'+
+                '</div>\n'+
+                '</div>\n'
+            document.getElementById("maindiv").appendChild(oLi);
+            var arr1  =
+                {
+                    "name" : name,
+                    "value" : value,
+                    "date":date
+                }
+            var json;
+            json=$.parseJSON(localStorage.getItem("mdata"));
+            json[type]=arr1;
+            localStorage.setItem("mdata",JSON.stringify(json));
+        }
+        else if(type==''||res==''){
+            alert("账号和留言不能为空");
+        }
+    };
+    document.getElementById("maindiv").onclick = function (event) {//event事件对象
+        event = event || window.event;//处理ie下兼容性
+        var target = event.target||event.srcElement; //事件源
+        var tar =$(target);
+        var type =tar.parent().parent().children("a").eq(0).children("span").eq(0).text();
+        if(tar.attr("class")=="delete") {
+            if (confirm('确定要删除该项吗？')) {
+                document.getElementById("maindiv").removeChild(target.parentNode.parentNode.parentNode);
+                var json;
+                json = $.parseJSON(localStorage.getItem("mdata"));
+                delete json[type];
+                localStorage.setItem("mdata", JSON.stringify(json));
+            }
+        }
+    }
+
+    var mdata;
+    //数据放入storage
+    function fresh1(){
+        if(localStorage.getItem("mdata")!=null){
+            mdata = $.parseJSON(localStorage.getItem("mdata"));
+        }
+        else if(localStorage.getItem("mdata")==null){
+            $.ajax({
+                url: "./json/message.json",//json文件位置，文件名
+                type: "GET",//请求方式为get
+                dataType: "json", //返回数据格式为json
+                async: false,
+                success: function (data) {
+                    localStorage.setItem("mdata",JSON.stringify(data));
+                    mdata = localStorage.getItem("mdata").parseJSON;//请求成功完成后要执行的方法'
+                }
+            });
+        }
+    }
+    //动态生成前端界面
+    function fresh2() {
+        for (var c in mdata) {
+            var oLi = document.createElement('div');
+            var name=mdata[c].name;
+            var value=mdata[c].value;
+            var date=mdata[c].date;
+            oLi.innerHTML =
+                '<div class="content">\n'+
+                '<a class="author">\n'+
+                '<span>'+name+'</span>\n'+
+                '</a>\n'+
+                '<div class="metadata">\n'+
+                ' <span class="date">'+date+'</span>\n'+
+                '</div>\n'+
+                '<div class="text">'+value+'</div>\n'+
+                ' <div class="actions">\n'+
+                '<a class="reply" data-messageid="1" data-messagenickname="Matt" onclick="reply(this)">回复</a>\n'+
+                '<a class="delete" href="#" onclick="return confirm("确定要删除该评论吗?")">删除</a>\n'+
+                '</div>\n'+
+                '</div>\n'
+            document.getElementById("maindiv").appendChild(oLi);
+        }
+    }
+    window.onload=function () {
+        fresh1();
+        fresh2();
+    }
+
+
+</script>
+</body>
+</html>
